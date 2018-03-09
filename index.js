@@ -11,7 +11,7 @@ const moment = require('moment');
 // https://developers.trello.com/reference/
 
 
-module.exports.execute3 = () => {
+module.exports.printCards = () => {
 
     const key = config.trello_api.key;
     const token = config.trello_api.token;
@@ -19,11 +19,11 @@ module.exports.execute3 = () => {
 
     const options =
         {
-            uri: 'https://trello.com/1/boards/' + boardId + '/cards',
+            uri: 'https://api.trello.com/1/boards/' + boardId + '/cards',
             qs: {
                 "key": key,
-                "token": token,
-                "fields": "idShort,name,url,due"
+                "token": token
+                // "fields": "idShort,name,url,due"
             }
         };
 
@@ -53,14 +53,48 @@ module.exports.execute3 = () => {
 };
 
 
-module.exports.execute = () => {
+module.exports.getCards = (boardId) => {
 
     const key = config.trello_api.key;
     const token = config.trello_api.token;
 
     const options =
         {
-            uri: 'https://trello.com/1/members/masatomix/boards',
+            uri: 'https://api.trello.com/1/boards/' + boardId + '/cards',
+            qs: {
+                "key": key,
+                "token": token
+                // "fields": "idShort,name,url,due"
+            }
+        };
+
+
+    const promise = new Promise((resolve, reject) => {
+        request.get(options,
+            function (err, response, body) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const cardsArray
+                    = JSON.parse(body);
+                resolve(cardsArray);
+            }
+        );
+    });
+
+    return promise;
+};
+
+
+module.exports.printBoards = () => {
+
+    const key = config.trello_api.key;
+    const token = config.trello_api.token;
+
+    const options =
+        {
+            uri: 'https://api.trello.com/1/members/masatomix/boards',
             qs: {
                 "key": key,
                 "token": token,
@@ -85,14 +119,14 @@ module.exports.execute = () => {
 };
 
 
-module.exports.execute2 = () => {
+module.exports.printMyInfo = () => {
 
     const key = config.trello_api.key;
     const token = config.trello_api.token;
 
     const options =
         {
-            uri: 'https://trello.com/1/members/me/',
+            uri: 'https://api.trello.com/1/members/me/',
             qs: {
                 "key": key,
                 "token": token
@@ -109,14 +143,58 @@ module.exports.execute2 = () => {
             const obj = JSON.parse(body);
             const idBoards = obj.idBoards;
             logger.main.info(idBoards);
-            // console.log(robots);
             for (let index = 0; index < idBoards.length; index++) {
                 console.log(idBoards[index]);
 
             }
+            console.log(obj.username);
         }
     );
 };
 
-me.execute3();
+
+module.exports.getMyUser = () => {
+
+    const key = config.trello_api.key;
+    const token = config.trello_api.token;
+    const options =
+        {
+            uri: 'https://api.trello.com/1/members/me/',
+            qs: {
+                "key": key,
+                "token": token
+            }
+        };
+
+    const promise = new Promise((resolve, reject) => {
+        request.get(options,
+            function (err, response, body) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const obj = JSON.parse(body);
+                resolve(obj);
+            }
+        );
+
+    });
+    return promise;
+
+};
+
+
+// me.printBoards();
+// me.printMyInfo();
+// me.printCards();
 // me.execute();
+
+me.getMyUser().then((obj) => {
+    console.log(obj.username);
+    console.log(obj.fullName);
+});
+
+
+me.getCards(config.trello_api.boardId).then((cardArray) => {
+    console.log(cardArray);
+});

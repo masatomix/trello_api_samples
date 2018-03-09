@@ -1,6 +1,7 @@
 {
   "trello_api": {
     "key": "xxx",
-    "token": "xxx"
+    "token": "xxx",
+    "boardId": "xxx"
   }
 }

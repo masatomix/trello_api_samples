@@ -1,0 +1,26 @@
+{
+  "name": "trello_api_samples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://masatomix@github.com/masatomix/trello_api_samples.git"
+  },
+  "author": "Masatomi KINO",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/masatomix/trello_api_samples/issues"
+  },
+  "homepage": "https://github.com/masatomix/trello_api_samples#readme",
+  "dependencies": {
+    "config": "^1.30.0",
+    "iconv-lite": "^0.4.19",
+    "log4js": "^2.5.3",
+    "moment": "^2.21.0",
+    "request": "^2.83.0"
+  }
+}

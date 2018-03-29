@@ -2,6 +2,11 @@
   "trello_api": {
     "key": "xxx",
     "token": "xxx",
-    "boardId": "xxx"
+    "boardId": "xxx",
+    "excludeListIds": [
+      "xxx1",
+      "xxx2",
+      "xxx3"
+    ]
   }
 }
